@@ -107,6 +107,44 @@ const ChatForm = styled.div`
     font-size: 1.4rem;
   }
 `;
+const ConversationSnippet = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 10px;
+  cursor: pointer;
+  color: #ddd;
+  font-size: 1.3rem;
+  border-bottom: 1px solid #002c88;
+  padding: 20px 20px 20px 15px;
+  .active,
+  :hover {
+    background: #002c88;
+  }
+  img {
+    height: 40px;
+    border-radius: 100%;
+  }
+  .title-text {
+    font-weight: bold;
+    color: #eee;
+  }
+  .created-date {
+    color: #ddd;
+    white-space: nowrap;
+    font-size: 1rem;
+  }
+  .lead-details {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    grid-gap: 15px;
+  }
+  .conversation-message {
+    border: 1px solid red;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+`;
 
 const Home = () => (
   <ChatBody>
@@ -118,7 +156,19 @@ const Home = () => (
       <SearchContainer>
         <input type="text" placeholder="search" />
       </SearchContainer>
-      <ConversationList>This is the conversation list</ConversationList>
+      <ConversationList>
+        <ConversationSnippet>
+          <div className="created-date">Apr 16 9:04pm</div>
+          <div className="lead-details">
+            <img src="../static/profiles/daryl.png" />
+            <div className="title-text">Scottie Schneider aslkasflejfase</div>
+          </div>
+
+          <div className="conversation-message">
+            This is a message ablajsejflasjefl;asefas
+          </div>
+        </ConversationSnippet>
+      </ConversationList>
       <NewMessageContainer>
         <a href="#"></a>
       </NewMessageContainer>
