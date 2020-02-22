@@ -85,9 +85,27 @@ const ChatMessageList = styled.div`
 `;
 const ChatForm = styled.div`
   grid-area: chat-form;
+  display: grid;
+  grid: 51px / 32px 1fr;
+  grid-gap: 15px;
+  align-items: center;
+  align-content: center;
   background: ${props => props.background || "#eee"};
   border-radius: 0 0 10px 0;
   border-top: 1px solid rgba(0, 0, 0, 0.25);
+  padding-left: 42px;
+  padding-right: 22px;
+  img {
+    cursor: pointer;
+  }
+  input {
+    outline: none;
+    padding: 15px;
+    border: 2px solid #ddd;
+    color: #330;
+    border-radius: 6px;
+    font-size: 1.4rem;
+  }
 `;
 
 const Home = () => (
@@ -109,7 +127,10 @@ const Home = () => (
         <img src="../static/trash-logo.svg"></img>
       </ChatTitle>
       <ChatMessageList>Chat Message List</ChatMessageList>
-      <ChatForm>Chat Form</ChatForm>
+      <ChatForm>
+        <img src="../static/attachment-logo.svg"></img>
+        <input type="text" placeholder="type a message" />
+      </ChatForm>
     </ChatContainer>
   </ChatBody>
 );
