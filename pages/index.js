@@ -49,6 +49,7 @@ const SearchContainer = styled.div`
 const ConversationList = styled.div`
   grid-area: conversation-list;
   background: ${props => props.background || "#0048aa"};
+  overflow-y: scroll;
 `;
 const NewMessageContainer = styled.div`
   grid-area: new-message-container;
@@ -149,6 +150,84 @@ const ConversationSnippet = styled.div`
   }
 `;
 
+const conversations = [
+  {
+    id: 1,
+    img: "../static/profiles/ben.png",
+    date: "3 minutes ago",
+    name: "Al E Gater",
+    message: "This is a rather long message, that should (not) overflow."
+  },
+  {
+    id: 2,
+    img: "../static/profiles/daryl.png",
+    date: "1 hour ago",
+    name: "Holly Wood",
+    message: "This is a rather long message, that should (not) overflow."
+  },
+  {
+    id: 3,
+    img: "../static/profiles/douglas.png",
+    date: "Apr 16 9:04pm",
+    name: "Ben Dover",
+    message: "This is a rather long message, that should (not) overflow."
+  },
+  {
+    id: 4,
+    img: "../static/profiles/jacob.png",
+    date: "Apr 16 9:04pm",
+    name: "Anita Room",
+    message: "This is a rather long message, that should (not) overflow."
+  },
+  {
+    id: 5,
+    img: "../static/profiles/john.jpeg",
+    date: "Apr 16 9:04pm",
+    name: "Jack Pott",
+    message: "This is a rather long message, that should (not) overflow."
+  },
+  {
+    id: 6,
+    img: "../static/profiles/kim.jpeg",
+    date: "Apr 16 9:04pm",
+    name: "Kay Oss",
+    message: "This is a rather long message, that should (not) overflow."
+  },
+  {
+    id: 7,
+    img: "../static/profiles/sarah.jpeg",
+    date: "Apr 16 9:04pm",
+    name: "Bennie Factor",
+    message: "This is a rather long message, that should (not) overflow."
+  },
+  {
+    id: 8,
+    img: "../static/profiles/stacey.jpeg",
+    date: "Apr 16 9:04pm",
+    name: "Ima Hogg",
+    message: "This is a rather long message, that should (not) overflow."
+  },
+  {
+    id: 9,
+    img: "../static/profiles/stan.jpeg",
+    date: "Apr 16 9:04pm",
+    name: "Joe King",
+    message: "This is a rather long message, that should (not) overflow."
+  }
+];
+
+const Conversation = ({ conversation: { id, img, date, name, message } }) => {
+  return (
+    <ConversationSnippet>
+      <div className="lead-details">
+        <img src={img} />
+        <div className="created-date">{date}</div>
+      </div>
+      <div className="title-text">{name}</div>
+      <div className="conversation-message">{message}</div>
+    </ConversationSnippet>
+  );
+};
 const Home = () => (
   <ChatBody>
     <ChatContainer>
@@ -160,16 +239,9 @@ const Home = () => (
         <input type="text" placeholder="search" />
       </SearchContainer>
       <ConversationList>
-        <ConversationSnippet>
-          <div className="lead-details">
-            <img src="../static/profiles/daryl.png" />
-            <div className="created-date">Apr 16 9:04pm</div>
-          </div>
-          <div className="title-text">Scottie Elliott Schneider</div>
-          <div className="conversation-message">
-            This is a message ablajsejflasjefl;asefas
-          </div>
-        </ConversationSnippet>
+        {conversations.map(conversation => (
+          <Conversation id={conversation.id} conversation={conversation} />
+        ))}
       </ConversationList>
       <NewMessageContainer>
         <a href="#"></a>
