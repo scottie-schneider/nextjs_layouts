@@ -194,12 +194,18 @@ const chatMessages = [
       {
         id: 1,
         from: "lead",
+        img: "../static/profiles/ben.png",
         content: "ok then",
         time: "9:05 am"
       },
       {
         id: 2,
         from: "user",
+        user: {
+          userId: 123,
+          userImg: "../static/users/scottie.jpg",
+          userName: "Scottie"
+        },
         content:
           "Yeah I think it's best we do that. Otherwise things won't work well at all. I'm adding more text here to test the sizing of the speech bubble and the wrapping of it too.",
         time: "10:01am"
@@ -212,12 +218,18 @@ const chatMessages = [
       {
         id: 1,
         from: "user",
+        user: {
+          userId: 123,
+          userImg: "../static/users/scottie.jpg",
+          userName: "Scottie"
+        },
         content: "Right! This is exactly what I needed.",
         time: "3:46 pm"
       },
       {
         id: 2,
         from: "lead",
+        img: "../static/profiles/ben.png",
         content: "For sure, happy to help",
         time: "10:01am"
       }
@@ -290,13 +302,15 @@ const conversations = [
   }
 ];
 
-const Message = ({ message: { content, time, from } }) => {
+const Message = ({ message: { content, time, from, user = {}, img } }) => {
+  const { userImg, userId, userName } = user;
   return (
     <div
       className={`message-row ${
         from == "user" ? "user-message" : "lead-message"
       }`}
     >
+      {Object.keys(user).length === 0 ? "user pic" : "lead pic"}
       <div class="message-text">{content}</div>
       <div class="message-time">{time}</div>
     </div>
