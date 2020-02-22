@@ -84,8 +84,21 @@ const ChatTitle = styled.div`
 `;
 const ChatMessageList = styled.div`
   grid-area: chat-message-list;
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 0 20px;
+  overflow-y: scroll;
   .message-row {
     margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 70%;
+  }
+  .lead-message {
+    justify-items: start;
+  }
+  .user-message {
+    justify-items: end;
+    justify-content: end;
   }
   .message-time {
     font-size: 1.3rem;
