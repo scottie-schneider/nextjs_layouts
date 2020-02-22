@@ -67,6 +67,10 @@ const NewMessageContainer = styled.div`
   }
 `;
 const ChatTitle = styled.div`
+  display: grid;
+  grid: 36px / 1fr 36px;
+  align-content: center;
+  align-items: center;
   grid-area: chat-title;
   background: ${props => props.background || "#eee"};
   color: ${props => props.color || "#0048aa"};
@@ -74,6 +78,7 @@ const ChatTitle = styled.div`
   font-size: 2rem;
   border-radius: 0 10px 0 0;
   box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.75);
+  padding: 0 20px;
 `;
 const ChatMessageList = styled.div`
   grid-area: chat-message-list;
@@ -99,7 +104,10 @@ const Home = () => (
       <NewMessageContainer>
         <a href="#"></a>
       </NewMessageContainer>
-      <ChatTitle>Chat Title</ChatTitle>
+      <ChatTitle>
+        <span>Scottie Schneider</span>{" "}
+        <img src="../static/trash-logo.svg"></img>
+      </ChatTitle>
       <ChatMessageList>Chat Message List</ChatMessageList>
       <ChatForm>Chat Form</ChatForm>
     </ChatContainer>
