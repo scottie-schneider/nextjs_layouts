@@ -127,6 +127,9 @@ const ConversationSnippet = styled.div`
   .title-text {
     font-weight: bold;
     color: #eee;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .created-date {
     color: #ddd;
@@ -137,9 +140,9 @@ const ConversationSnippet = styled.div`
     display: grid;
     grid-template-columns: 40px 1fr;
     grid-gap: 15px;
+    align-items: center;
   }
   .conversation-message {
-    border: 1px solid red;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -158,12 +161,11 @@ const Home = () => (
       </SearchContainer>
       <ConversationList>
         <ConversationSnippet>
-          <div className="created-date">Apr 16 9:04pm</div>
           <div className="lead-details">
             <img src="../static/profiles/daryl.png" />
-            <div className="title-text">Scottie Schneider aslkasflejfase</div>
+            <div className="created-date">Apr 16 9:04pm</div>
           </div>
-
+          <div className="title-text">Scottie Elliott Schneider</div>
           <div className="conversation-message">
             This is a message ablajsejflasjefl;asefas
           </div>
