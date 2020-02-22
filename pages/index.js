@@ -30,9 +30,6 @@ const SearchContainer = styled.div`
   box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.75);
   z-index: 1;
   padding: 0 20px;
-  border: 1px solid red;
-  min-height: 0; /* NEW */
-  min-width: 0; /* NEW; needed for Firefox */
   input {
     width: 167px;
     color: #eee;
@@ -55,9 +52,19 @@ const ConversationList = styled.div`
 `;
 const NewMessageContainer = styled.div`
   grid-area: new-message-container;
+  display: grid;
+  grid: 40px / 40px;
+  align-content: center;
   background: ${props => props.background || "#0048aa"};
   border-top: 1px solid rgba(0, 0, 0, 0.25);
   border-radius: 0 0 0 10px;
+  padding: 0 15px;
+  font-size: 3.6rem;
+  a {
+    background: url("../static/add.svg") no-repeat rgba(255, 255, 255, 0);
+    background-position: center center;
+    background-size: 40px 40px;
+  }
 `;
 const ChatTitle = styled.div`
   grid-area: chat-title;
@@ -90,7 +97,7 @@ const Home = () => (
       </SearchContainer>
       <ConversationList>This is the conversation list</ConversationList>
       <NewMessageContainer>
-        This is the new message container
+        <a href="#"></a>
       </NewMessageContainer>
       <ChatTitle>Chat Title</ChatTitle>
       <ChatMessageList>Chat Message List</ChatMessageList>
