@@ -84,6 +84,30 @@ const ChatTitle = styled.div`
 `;
 const ChatMessageList = styled.div`
   grid-area: chat-message-list;
+  .message-row {
+    margin-bottom: 20px;
+  }
+  .message-time {
+    font-size: 1.3rem;
+    color: #777;
+  }
+  .message-text {
+    padding: 9px 14px;
+    font-size: 1.6rem;
+    margin-bottom: 5px;
+  }
+  .user-message .message-text {
+    background: #0048aa;
+    color: #eee;
+    border: 1px solid #0048aa;
+    border-radius: 14px 14px 0 14px;
+  }
+  .lead-message .message-text {
+    background: #eee;
+    color: #111;
+    border: 1px solid #ddd;
+    border-radius: 14px 14px 14px 0;
+  }
 `;
 const ChatForm = styled.div`
   grid-area: chat-form;
@@ -253,9 +277,13 @@ const conversations = [
   }
 ];
 
-const Message = ({ message: { content, time } }) => {
+const Message = ({ message: { content, time, from } }) => {
   return (
-    <div class="message-row you-message">
+    <div
+      className={`message-row ${
+        from == "user" ? "user-message" : "lead-message"
+      }`}
+    >
       <div class="message-text">{content}</div>
       <div class="message-time">{time}</div>
     </div>
@@ -320,7 +348,7 @@ const Home = () => {
         <ChatMessageList>
           {messages !== [] &&
             messages.map(message => <Message message={message} />)}
-          {!messages == [] && <p>No messages. How about sending one?</p>}
+          {messages.length == 0 && <p>No messages. How about sending one?</p>}
         </ChatMessageList>
         <ChatForm>
           <img src="../static/attachment-logo.svg"></img>
