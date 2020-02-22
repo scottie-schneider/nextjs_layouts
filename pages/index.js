@@ -1,5 +1,6 @@
 import Head from "next/head";
 import styled from "styled-components";
+import { useState } from "react";
 
 const ChatContainer = styled.div`
   display: grid;
@@ -149,7 +150,43 @@ const ConversationSnippet = styled.div`
     text-overflow: ellipsis;
   }
 `;
-
+const chatMessages = [
+  {
+    id: 1,
+    messages: [
+      {
+        id: 1,
+        from: "lead",
+        content: "ok then",
+        time: "9:05 am"
+      },
+      {
+        id: 2,
+        from: "user",
+        content:
+          "Yeah I think it's best we do that. Otherwise things won't work well at all. I'm adding more text here to test the sizing of the speech bubble and the wrapping of it too.",
+        time: "10:01am"
+      }
+    ]
+  },
+  {
+    id: 2,
+    messages: [
+      {
+        id: 1,
+        from: "user",
+        content: "Right! This is exactly what I needed.",
+        time: "3:46 pm"
+      },
+      {
+        id: 2,
+        from: "lead",
+        content: "For sure, happy to help",
+        time: "10:01am"
+      }
+    ]
+  }
+];
 const conversations = [
   {
     id: 1,
@@ -163,28 +200,28 @@ const conversations = [
     img: "../static/profiles/daryl.png",
     date: "1 hour ago",
     name: "Holly Wood",
-    message: "This is a rather long message, that should (not) overflow."
+    message: "Very funny"
   },
   {
     id: 3,
     img: "../static/profiles/douglas.png",
     date: "Apr 16 9:04pm",
     name: "Ben Dover",
-    message: "This is a rather long message, that should (not) overflow."
+    message: "Yes I love how Python does that."
   },
   {
     id: 4,
     img: "../static/profiles/jacob.png",
     date: "Apr 16 9:04pm",
     name: "Anita Room",
-    message: "This is a rather long message, that should (not) overflow."
+    message: "Yeah Miami Heat are done"
   },
   {
     id: 5,
     img: "../static/profiles/john.jpeg",
     date: "Apr 16 9:04pm",
     name: "Jack Pott",
-    message: "This is a rather long message, that should (not) overflow."
+    message: "No it does not"
   },
   {
     id: 6,
@@ -216,9 +253,20 @@ const conversations = [
   }
 ];
 
-const Conversation = ({ conversation: { id, img, date, name, message } }) => {
+const Message = ({ message: { content, time } }) => {
   return (
-    <ConversationSnippet>
+    <div class="message-row you-message">
+      <div class="message-text">{content}</div>
+      <div class="message-time">{time}</div>
+    </div>
+  );
+};
+const Conversation = ({
+  conversation: { id, img, date, name, message },
+  handleClick
+}) => {
+  return (
+    <ConversationSnippet onClick={() => handleClick(id)}>
       <div className="lead-details">
         <img src={img} />
         <div className="created-date">{date}</div>
@@ -228,35 +276,59 @@ const Conversation = ({ conversation: { id, img, date, name, message } }) => {
     </ConversationSnippet>
   );
 };
-const Home = () => (
-  <ChatBody>
-    <ChatContainer>
-      <Head>
-        <title>Chat App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <SearchContainer>
-        <input type="text" placeholder="search" />
-      </SearchContainer>
-      <ConversationList>
-        {conversations.map(conversation => (
-          <Conversation id={conversation.id} conversation={conversation} />
-        ))}
-      </ConversationList>
-      <NewMessageContainer>
-        <a href="#"></a>
-      </NewMessageContainer>
-      <ChatTitle>
-        <span>Scottie Schneider</span>{" "}
-        <img src="../static/trash-logo.svg"></img>
-      </ChatTitle>
-      <ChatMessageList>Chat Message List</ChatMessageList>
-      <ChatForm>
-        <img src="../static/attachment-logo.svg"></img>
-        <input type="text" placeholder="type a message" />
-      </ChatForm>
-    </ChatContainer>
-  </ChatBody>
-);
+const Home = () => {
+  const [lead, setLead] = useState(1);
+  const [messages, setMessages] = useState(
+    chatMessages.filter(x => x.id == 1)[0].messages
+  );
+  const handleClick = id => {
+    setLead(id);
+    let messageData = chatMessages.filter(x => x.id == id);
+    if (messageData.length > 0) {
+      const messages = messageData[0].messages;
+      setMessages(p => messages);
+    } else {
+      setMessages([]);
+    }
+  };
+  return (
+    <ChatBody>
+      <ChatContainer>
+        <Head>
+          <title>Chat App</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <SearchContainer>
+          <input type="text" placeholder="search" />
+        </SearchContainer>
+        <ConversationList>
+          {conversations.map(conversation => (
+            <Conversation
+              id={conversation.id}
+              conversation={conversation}
+              handleClick={handleClick}
+            />
+          ))}
+        </ConversationList>
+        <NewMessageContainer>
+          <a href="#"></a>
+        </NewMessageContainer>
+        <ChatTitle>
+          <span>Scottie Schneider</span>{" "}
+          <img src="../static/trash-logo.svg"></img>
+        </ChatTitle>
+        <ChatMessageList>
+          {messages !== [] &&
+            messages.map(message => <Message message={message} />)}
+          {!messages == [] && <p>No messages. How about sending one?</p>}
+        </ChatMessageList>
+        <ChatForm>
+          <img src="../static/attachment-logo.svg"></img>
+          <input type="text" placeholder="type a message" />
+        </ChatForm>
+      </ChatContainer>
+    </ChatBody>
+  );
+};
 
 export default Home;
