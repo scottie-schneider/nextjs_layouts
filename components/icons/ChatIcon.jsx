@@ -1,7 +1,7 @@
 import React from "react";
 
-function ServiceIcon(props) {
-  const title = props.title || "ic markunread mailbox 48px";
+function ChatIcon(props) {
+  const title = props.title || "ic chat bubble outline 48px";
 
   return (
     <svg
@@ -12,10 +12,10 @@ function ServiceIcon(props) {
     >
       <title>{title}</title>
       <g fill={props.color || "#fff"}>
-        <path d="M40 12H20v12h-4V8h12V0H12v12H8c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h32c2.2 0 4-1.8 4-4V16c0-2.2-1.8-4-4-4z" />
+        <path d="M40 4H8C5.79 4 4 5.79 4 8v36l8-8h28c2.21 0 4-1.79 4-4V8c0-2.21-1.79-4-4-4zm0 28H12l-4 4V8h32v24z" />
       </g>
     </svg>
   );
 }
 
-export default ServiceIcon;
+export default ChatIcon;
