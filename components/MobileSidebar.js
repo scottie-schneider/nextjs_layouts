@@ -10,51 +10,39 @@ import CarIcon from "./icons/CarIcon";
 import ChatIcon from "./icons/ChatIcon";
 
 const MobileSidebarStyles = styled.div`
+  @media (min-width: 1000px) {
+    display: none;
+  }
+  background-color: #252529;
   height: 100%;
   position: fixed;
   z-index: 10;
   left: 0;
   width: 250px;
   margin-top: 0px;
-  transform: ${props => (props.open ? "translateX(0)" : "translateX(-250px)")};
+  transform: ${props => (props.open ? "translateX(0)" : "translateX(-290px)")};
   transition: transform 250ms ease-in-out;
   background: linear-gradient(180deg, #fc466b 0%, #3f5efb 100%);
 `;
 // MOBILE SIDEBAR MENU
-const MobileSidebarContainer = styled.div`
-  grid-area: sidebar;
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  height: calc(100vh - 40px);
-  background-color: #252529;
-  color: #fff;
-  @media (max-width: 1000px) {
-    transform: translateX(-235px);
-    transition: transform 250ms ease-in-out;
-  }
-`;
 const MobileSidebarMenu = styled.ul`
   display: flex;
   height: 100%;
   position: fixed;
   left: 0;
-  width: 235px;
   align-items: flex-start;
   flex-direction: column;
   list-style: none;
-  width: 100%;
   padding: 0px 30px;
 `;
 const MobileSidebarMenuItem = styled.li`
   display: flex;
   height: 40px;
-  width: 100%;
   align-items: center;
+  width: 80%;
   cursor: pointer;
   &:hover {
     background: rgba(255, 255, 255, 0.05);
-    box-shadow: inset 3px 0 0 0 #ffffff;
     cursor: pointer;
   }
 `;
@@ -108,7 +96,7 @@ const MobileSidebar = ({ open, handleMenuClick }) => {
       <MobileSidebarMenu>
         <MobileMenuLogo>
           <ChatIcon />
-          FollowupEdge
+          Workspace Name
         </MobileMenuLogo>
         <MobileSidebarMenuItem>
           <DashIcon size={30} />

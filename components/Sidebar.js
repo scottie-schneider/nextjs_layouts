@@ -7,9 +7,11 @@ import FolderIcon from "./icons/FolderIcon";
 import LibraryIcon from "./icons/LibraryIcon";
 import CarIcon from "./icons/CarIcon";
 import ChatIcon from "./icons/ChatIcon";
-
+import ChevronLeftIcon from "./icons/ChevronLeftIcon";
+import ChevronRightIcon from "./icons/ChevronRightIcon";
 // SIDEBAR
 const SidebarContainer = styled.div`
+  z-index: 4;
   grid-area: sidebar;
   display: flex;
   flex-direction: column;
@@ -27,26 +29,25 @@ const SidebarMenu = styled.ul`
   height: 100%;
   position: fixed;
   left: 0;
-  width: 235px;
+  width: ${props => (props.collapse ? "70px" : "235px")};
   align-items: flex-start;
   flex-direction: column;
   list-style: none;
-  width: 100%;
-  padding: 0px 30px;
+  padding: 0px 15px;
 `;
 const SidebarMenuItem = styled.li`
   display: flex;
   height: 40px;
-  width: 100%;
+  width: 80%;
   align-items: center;
   cursor: pointer;
   &:hover {
     background: rgba(255, 255, 255, 0.05);
-    box-shadow: inset 3px 0 0 0 #ffffff;
     cursor: pointer;
   }
 `;
 const SidebarMenuItemLabel = styled.p`
+  display: ${props => (props.collapse ? "none" : "block")};
   margin-left: 20px;
   font-family: "Roboto", sans-serif;
   color: #fff;
@@ -95,42 +96,60 @@ const MenuCollapse = styled.div`
 `;
 // END SIDEBAR
 
-const Sidebar = ({ collapseMenu }) => {
+const Sidebar = ({ collapseMenu, collapse }) => {
   return (
     <SidebarContainer>
       <SidebarMenu>
         <MenuLogo>
           <ChatIcon />
-          FollowupEdge
+          {!collapse && "Workspace name"}
         </MenuLogo>
         <SidebarMenuItem>
           <DashIcon size={30} />
-          <SidebarMenuItemLabel>Dashboard</SidebarMenuItemLabel>
+          <SidebarMenuItemLabel collapse={collapse}>
+            Dashboard
+          </SidebarMenuItemLabel>
         </SidebarMenuItem>
         <SidebarMenuItem>
           <AlertIcon size={30} />
-          <SidebarMenuItemLabel>Service Alerts</SidebarMenuItemLabel>
+          <SidebarMenuItemLabel collapse={collapse}>
+            Service Alerts
+          </SidebarMenuItemLabel>
         </SidebarMenuItem>
         <SidebarMenuItem>
           <ServiceIcon size={30} />
-          <SidebarMenuItemLabel>Customer Tickets</SidebarMenuItemLabel>
+          <SidebarMenuItemLabel collapse={collapse}>
+            Customer Tickets
+          </SidebarMenuItemLabel>
         </SidebarMenuItem>
         <SidebarMenuItem>
           <FolderIcon size={30} />
-          <SidebarMenuItemLabel>Archive</SidebarMenuItemLabel>
+          <SidebarMenuItemLabel collapse={collapse}>
+            Archive
+          </SidebarMenuItemLabel>
         </SidebarMenuItem>
         <SidebarMenuItem>
           <LibraryIcon size={30} />
-          <SidebarMenuItemLabel>Library</SidebarMenuItemLabel>
+          <SidebarMenuItemLabel collapse={collapse}>
+            Library
+          </SidebarMenuItemLabel>
         </SidebarMenuItem>
         <SidebarMenuItem>
           <CarIcon size={30} />
-          <SidebarMenuItemLabel>Deliveries</SidebarMenuItemLabel>
+          <SidebarMenuItemLabel collapse={collapse}>
+            Deliveries
+          </SidebarMenuItemLabel>
         </SidebarMenuItem>
         <MenuCollapse>
-          <p onClick={collapseMenu}>Collapse</p>
+          <p onClick={collapseMenu}>
+            {collapse ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </p>
         </MenuCollapse>
-        <MenuSignOut>Sign Out</MenuSignOut>
+        <MenuSignOut>
+          <SidebarMenuItemLabel collapse={collapse}>
+            Sign out
+          </SidebarMenuItemLabel>
+        </MenuSignOut>
       </SidebarMenu>
     </SidebarContainer>
   );

@@ -11,8 +11,8 @@ const GridContainer = styled.div`
   grid-template-columns: ${props => (props.collapse ? "70px" : "235px")} 1fr;
   grid-template-rows: 40px 1fr;
   grid-template-areas:
-    "header header header"
-    "sidebar main main";
+    "header header"
+    "sidebar main";
   height: 100vh;
   .header {
     grid-area: head;
@@ -362,9 +362,25 @@ const conversations = [
 ];
 const HeaderStyle = styled.div`
   grid-area: header;
+  border: 1px solid red;
+  display: flex;
+  align-items: center;
+  z-index: 9;
+  .menu {
+    display: ${props => (props.open ? "none" : "flex")};
+    width: 50px;
+    height: 100%;
+    align-items: center;
+  }
+  .workspaces {
+    display: grid;
+    align-items: center;
+    grid-gap: 10px;
+    grid-auto-flow: column;
+  }
+
   svg {
     display: block;
-    cursor: pointer;
   }
   @media only screen and (min-width: 1000px) {
     svg {
@@ -372,12 +388,48 @@ const HeaderStyle = styled.div`
     }
   }
 `;
+const workspaces = [
+  {
+    id: 1,
+    color: "red",
+    initial: "W"
+  },
+  {
+    id: 2,
+    color: "blue",
+    initial: "S"
+  },
+  {
+    id: 3,
+    color: "green",
+    initial: "B"
+  }
+];
+const StyledWorkspaceBlock = styled.div`
+  background: ${props => props.color};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 30px;
+  color: white;
+  border-radius: 5px;
+`;
 
-const HeaderNav = ({ handleMenuClick }) => {
+const WorkspaceBlock = ({ workspace: { color, initial } }) => {
+  return <StyledWorkspaceBlock color={color}>{initial}</StyledWorkspaceBlock>;
+};
+
+const HeaderNav = ({ handleMenuClick, open }) => {
   return (
-    <HeaderStyle>
-      <div onClick={handleMenuClick}>
-        <MenuIcon />
+    <HeaderStyle open={open}>
+      <div className="menu" onClick={handleMenuClick}>
+        <MenuIcon size={30} />
+      </div>
+      <div className="workspaces">
+        {workspaces.map(workspace => (
+          <WorkspaceBlock workspace={workspace} />
+        ))}
       </div>
     </HeaderStyle>
   );
@@ -448,8 +500,8 @@ const Home = () => {
   return (
     <GridContainer collapse={collapse}>
       <MobileSidebar open={showMobileMenu} handleMenuClick={handleMenuClick} />
-      <HeaderNav handleMenuClick={handleMenuClick} />
-      <Sidebar collapseMenu={collapseMenu} />
+      <HeaderNav handleMenuClick={handleMenuClick} open={showMobileMenu} />
+      <Sidebar collapseMenu={collapseMenu} collapse={collapse} />
       <ChatBody>
         <ChatContainer>
           <Head>
