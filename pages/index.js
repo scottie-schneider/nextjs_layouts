@@ -4,12 +4,20 @@ import { useState } from "react";
 
 const ChatContainer = styled.div`
   display: grid;
-  grid:
-    "search-container chat-title" 71px
-    "conversation-list chat-message-list" 1fr
-    "new-message-container chat-form" 78px
-    / 275px 1fr;
-  min-width: 800px;
+  grid-template-columns: 275px 1fr;
+  grid-template-rows: 71px 1fr 78px;
+  grid-template-areas:
+    "search-container chat-title"
+    "conversation-list chat-message-list"
+    "new-message-container chat-form";
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 71px 1fr 78px;
+    grid-template-areas:
+      "chat-title"
+      "chat-message-list"
+      "chat-form";
+  }
   max-width: 1000px;
   max-height: 800px;
   width: 100%;
