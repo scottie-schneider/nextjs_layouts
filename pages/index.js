@@ -92,13 +92,31 @@ const ChatMessageList = styled.div`
     margin-bottom: 20px;
     display: grid;
     grid-template-columns: 70%;
+    img {
+      border-radius: 50%;
+      grid-row: span 2;
+      width: 40px;
+      height: 40px;
+    }
   }
+  .message-content {
+    display: grid;
+  }
+
   .lead-message {
     justify-items: start;
+    .message-content {
+      grid-template-columns: 48px 1fr;
+      grid-column-gap: 15px;
+    }
   }
   .user-message {
-    justify-items: end;
     justify-content: end;
+    .message-content {
+      justify-items: end;
+      grid-template-columns: 48px 1fr;
+      grid-column-gap: 15px;
+    }
   }
   .message-time {
     font-size: 1.3rem;
@@ -160,8 +178,9 @@ const ConversationSnippet = styled.div`
     background: #002c88;
   }
   img {
+    border-radius: 50%;
+    width: 40px;
     height: 40px;
-    border-radius: 100%;
   }
   .title-text {
     font-weight: bold;
@@ -310,9 +329,16 @@ const Message = ({ message: { content, time, from, user = {}, img } }) => {
         from == "user" ? "user-message" : "lead-message"
       }`}
     >
-      {Object.keys(user).length === 0 ? "user pic" : "lead pic"}
-      <div class="message-text">{content}</div>
-      <div class="message-time">{time}</div>
+      <div className="message-content">
+        {/* {Object.keys(user).length === 0 ? "user pic" : "lead pic"} */}
+        {Object.keys(user).length === 0 && <img src={img} />}
+        {Object.keys(user).length > 0 && <img src={userImg} />}
+        <div class="message-text">{content}</div>
+        <div class="message-time">
+          {Object.keys(user).length > 0 && `${userName} - `}
+          {time}
+        </div>
+      </div>
     </div>
   );
 };
@@ -332,12 +358,14 @@ const Conversation = ({
   );
 };
 const Home = () => {
-  const [lead, setLead] = useState(1);
+  const [lead, setLead] = useState(
+    conversations.filter(convo => convo.id == 1)[0]
+  );
   const [messages, setMessages] = useState(
     chatMessages.filter(x => x.id == 1)[0].messages
   );
   const handleClick = id => {
-    setLead(id);
+    setLead(conversations.filter(convo => convo.id == id)[0]);
     let messageData = chatMessages.filter(x => x.id == id);
     if (messageData.length > 0) {
       const messages = messageData[0].messages;
@@ -369,8 +397,7 @@ const Home = () => {
           <a href="#"></a>
         </NewMessageContainer>
         <ChatTitle>
-          <span>Scottie Schneider</span>{" "}
-          <img src="../static/trash-logo.svg"></img>
+          <span>{lead.name}</span> <img src="../static/trash-logo.svg"></img>
         </ChatTitle>
         <ChatMessageList>
           {messages !== [] &&
