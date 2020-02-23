@@ -4,7 +4,8 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
     html {
-      height: 100%;
+      height: 100vh;
+      overflow: hidden;
     }
     body {
         margin: 0;

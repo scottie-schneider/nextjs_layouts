@@ -2,7 +2,7 @@ import Head from "next/head";
 import styled from "styled-components";
 import { useState, useRef } from "react";
 import Sidebar from "../components/Sidebar";
-import useOutsideClick from "../components/useOutsideClick";
+import MobileSidebar from "../components/MobileSidebar";
 import MenuIcon from "../components/icons/MenuIcon";
 
 const GridContainer = styled.div`
@@ -420,62 +420,6 @@ const Conversation = ({
   );
 };
 
-const MobileSidebarStyles = styled.div`
-  height: 100%;
-  position: fixed;
-  z-index: 10;
-  left: 0;
-  width: 250px;
-  margin-top: 60px;
-  transform: ${props => (props.open ? "translateX(0)" : "translateX(-250px)")};
-  transition: transform 250ms ease-in-out;
-  background: linear-gradient(180deg, #fc466b 0%, #3f5efb 100%);
-`;
-const MobileSidebar = ({ open, handleMenuClick }) => {
-  const ref = useRef();
-  useOutsideClick(ref, () => {
-    if (open) {
-      handleMenuClick();
-    }
-  });
-  return (
-    <MobileSidebarStyles ref={ref} open={open}>
-      <ul class="sidebarMenuInner">
-        <li>
-          Jelena Jovanovic <span>Web Developer</span>
-        </li>
-        <li>
-          <a href="https://vanila.io" target="_blank">
-            Company
-          </a>
-        </li>
-        <li>
-          <a href="https://instagram.com/plavookac" target="_blank">
-            Instagram
-          </a>
-        </li>
-        <li>
-          <a href="https://twitter.com/plavookac" target="_blank">
-            Twitter
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://www.youtube.com/channel/UCDfZM0IK6RBgud8HYGFXAJg"
-            target="_blank"
-          >
-            YouTube
-          </a>
-        </li>
-        <li>
-          <a href="https://www.linkedin.com/in/plavookac/" target="_blank">
-            Linkedin
-          </a>
-        </li>
-      </ul>
-    </MobileSidebarStyles>
-  );
-};
 const Home = () => {
   const [collapse, setCollapse] = useState(false);
   const collapseMenu = () => {
