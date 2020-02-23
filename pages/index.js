@@ -1,6 +1,31 @@
 import Head from "next/head";
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import Sidebar from "../components/Sidebar";
+import useOutsideClick from "../components/useOutsideClick";
+import MenuIcon from "../components/icons/MenuIcon";
+
+const GridContainer = styled.div`
+  display: grid;
+  height: 100vh;
+  grid-template-columns: ${props => (props.collapse ? "70px" : "235px")} 1fr;
+  grid-template-rows: 40px 1fr;
+  grid-template-areas:
+    "header header header"
+    "sidebar main main";
+  height: 100vh;
+  .header {
+    grid-area: head;
+    box-shadow: 0 1px 0 0 #eaedf3;
+  }
+  @media only screen and (max-width: 1000px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 40px 1fr;
+    grid-template-areas:
+      "header"
+      "main";
+  }
+`;
 
 const ChatContainer = styled.div`
   display: grid;
@@ -10,7 +35,7 @@ const ChatContainer = styled.div`
     "search-container chat-title"
     "conversation-list chat-message-list"
     "new-message-container chat-form";
-  @media (max-width: 700px) {
+  @media only screen and (max-width: 700px) {
     grid-template-columns: 1fr;
     grid-template-rows: 71px 1fr 78px;
     grid-template-areas:
@@ -18,16 +43,15 @@ const ChatContainer = styled.div`
       "chat-message-list"
       "chat-form";
   }
-  max-width: 1000px;
-  max-height: 800px;
   width: 100%;
-  height: 95vh;
+  height: 100%;
   background: #fff;
-  border-radius: 10px;
+  overflow-y: scroll;
 `;
 const ChatBody = styled.div`
-  height: 100vh;
+  height: calc(100vh - 40px);
   display: grid;
+  grid-area: main;
   place-items: center center;
 `;
 const SearchContainer = styled.div`
@@ -35,10 +59,12 @@ const SearchContainer = styled.div`
   align-items: center;
   grid-area: search-container;
   background: ${props => props.background || "#0048aa"};
-  border-radius: 10px 0 0 0;
   box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.75);
   z-index: 1;
   padding: 0 20px;
+  @media only screen and (max-width: 700px) {
+    display: none;
+  }
   input {
     width: 167px;
     color: #eee;
@@ -59,6 +85,9 @@ const ConversationList = styled.div`
   grid-area: conversation-list;
   background: ${props => props.background || "#0048aa"};
   overflow-y: scroll;
+  @media only screen and (max-width: 700px) {
+    display: none;
+  }
 `;
 const NewMessageContainer = styled.div`
   grid-area: new-message-container;
@@ -74,6 +103,9 @@ const NewMessageContainer = styled.div`
     background: url("../static/add.svg") no-repeat rgba(255, 255, 255, 0);
     background-position: center center;
     background-size: 40px 40px;
+  }
+  @media only screen and (max-width: 700px) {
+    display: none;
   }
 `;
 const ChatTitle = styled.div`
@@ -328,6 +360,28 @@ const conversations = [
     message: "This is a rather long message, that should (not) overflow."
   }
 ];
+const HeaderStyle = styled.div`
+  grid-area: header;
+  svg {
+    display: block;
+    cursor: pointer;
+  }
+  @media only screen and (min-width: 1000px) {
+    svg {
+      display: none;
+    }
+  }
+`;
+
+const HeaderNav = ({ handleMenuClick }) => {
+  return (
+    <HeaderStyle>
+      <div onClick={handleMenuClick}>
+        <MenuIcon />
+      </div>
+    </HeaderStyle>
+  );
+};
 
 const Message = ({ message: { content, time, from, user = {}, img } }) => {
   const { userImg, userId, userName } = user;
@@ -365,7 +419,69 @@ const Conversation = ({
     </ConversationSnippet>
   );
 };
+
+const MobileSidebarStyles = styled.div`
+  height: 100%;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  width: 250px;
+  margin-top: 60px;
+  transform: ${props => (props.open ? "translateX(0)" : "translateX(-250px)")};
+  transition: transform 250ms ease-in-out;
+  background: linear-gradient(180deg, #fc466b 0%, #3f5efb 100%);
+`;
+const MobileSidebar = ({ open, handleMenuClick }) => {
+  const ref = useRef();
+  useOutsideClick(ref, () => {
+    if (open) {
+      handleMenuClick();
+    }
+  });
+  return (
+    <MobileSidebarStyles ref={ref} open={open}>
+      <ul class="sidebarMenuInner">
+        <li>
+          Jelena Jovanovic <span>Web Developer</span>
+        </li>
+        <li>
+          <a href="https://vanila.io" target="_blank">
+            Company
+          </a>
+        </li>
+        <li>
+          <a href="https://instagram.com/plavookac" target="_blank">
+            Instagram
+          </a>
+        </li>
+        <li>
+          <a href="https://twitter.com/plavookac" target="_blank">
+            Twitter
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://www.youtube.com/channel/UCDfZM0IK6RBgud8HYGFXAJg"
+            target="_blank"
+          >
+            YouTube
+          </a>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/in/plavookac/" target="_blank">
+            Linkedin
+          </a>
+        </li>
+      </ul>
+    </MobileSidebarStyles>
+  );
+};
 const Home = () => {
+  const [collapse, setCollapse] = useState(false);
+  const collapseMenu = () => {
+    setCollapse(p => !collapse);
+  };
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [lead, setLead] = useState(
     conversations.filter(convo => convo.id == 1)[0]
   );
@@ -382,42 +498,50 @@ const Home = () => {
       setMessages([]);
     }
   };
+  const handleMenuClick = () => {
+    setShowMobileMenu(p => !showMobileMenu);
+  };
   return (
-    <ChatBody>
-      <ChatContainer>
-        <Head>
-          <title>Chat App</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <SearchContainer>
-          <input type="text" placeholder="search" />
-        </SearchContainer>
-        <ConversationList>
-          {conversations.map(conversation => (
-            <Conversation
-              id={conversation.id}
-              conversation={conversation}
-              handleClick={handleClick}
-            />
-          ))}
-        </ConversationList>
-        <NewMessageContainer>
-          <a href="#"></a>
-        </NewMessageContainer>
-        <ChatTitle>
-          <span>{lead.name}</span> <img src="../static/trash-logo.svg"></img>
-        </ChatTitle>
-        <ChatMessageList>
-          {messages !== [] &&
-            messages.map(message => <Message message={message} />)}
-          {messages.length == 0 && <p>No messages. How about sending one?</p>}
-        </ChatMessageList>
-        <ChatForm>
-          <img src="../static/attachment-logo.svg"></img>
-          <input type="text" placeholder="type a message" />
-        </ChatForm>
-      </ChatContainer>
-    </ChatBody>
+    <GridContainer collapse={collapse}>
+      <MobileSidebar open={showMobileMenu} handleMenuClick={handleMenuClick} />
+      <HeaderNav handleMenuClick={handleMenuClick} />
+      <Sidebar collapseMenu={collapseMenu} />
+      <ChatBody>
+        <ChatContainer>
+          <Head>
+            <title>Chat App</title>
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
+          <SearchContainer>
+            <input type="text" placeholder="search" />
+          </SearchContainer>
+          <ConversationList>
+            {conversations.map(conversation => (
+              <Conversation
+                id={conversation.id}
+                conversation={conversation}
+                handleClick={handleClick}
+              />
+            ))}
+          </ConversationList>
+          <NewMessageContainer>
+            <a href="#"></a>
+          </NewMessageContainer>
+          <ChatTitle>
+            <span>{lead.name}</span> <img src="../static/trash-logo.svg"></img>
+          </ChatTitle>
+          <ChatMessageList>
+            {messages !== [] &&
+              messages.map(message => <Message message={message} />)}
+            {messages.length == 0 && <p>No messages. How about sending one?</p>}
+          </ChatMessageList>
+          <ChatForm>
+            <img src="../static/attachment-logo.svg"></img>
+            <input type="text" placeholder="type a message" />
+          </ChatForm>
+        </ChatContainer>
+      </ChatBody>
+    </GridContainer>
   );
 };
 
