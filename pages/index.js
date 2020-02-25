@@ -137,30 +137,30 @@ const ChatMessageList = styled.div`
       grid-row: span 2;
       width: 40px;
       height: 40px;
+      margin-right: 1em;
     }
   }
   .message-content {
-    display: grid;
+    display: flex;
   }
 
   .lead-message {
     justify-items: start;
-    .message-content {
-      grid-template-columns: 48px 1fr;
-      grid-column-gap: 15px;
-    }
+]
   }
   .user-message {
-    justify-content: end;
+    justify-content: flex-end;
     .message-content {
-      justify-items: end;
-      grid-template-columns: 48px 1fr;
-      grid-column-gap: 15px;
+      justify-content: flex-end;
     }
   }
   .message-time {
     font-size: 1.3rem;
     color: #777;
+    display: flex;
+  }
+  .user-message .message-time {
+    justify-content: flex-end;
   }
   .message-text {
     padding: 9px 14px;
@@ -448,10 +448,10 @@ const Message = ({ message: { content, time, from, user = {}, img } }) => {
         {Object.keys(user).length === 0 && <img src={img} />}
         {Object.keys(user).length > 0 && <img src={userImg} />}
         <div class="message-text">{content}</div>
-        <div class="message-time">
-          {Object.keys(user).length > 0 && `${userName} - `}
-          {time}
-        </div>
+      </div>
+      <div class="message-time">
+        {Object.keys(user).length > 0 && `${userName} - `}
+        {time}
       </div>
     </div>
   );
