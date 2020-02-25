@@ -38,7 +38,7 @@ const SidebarMenu = styled.ul`
 const SidebarMenuItem = styled.li`
   display: flex;
   height: 40px;
-  width: 80%;
+  width: ${props => (props.collapse ? "30px" : "80%")};
   align-items: center;
   cursor: pointer;
   &:hover {
@@ -104,37 +104,37 @@ const Sidebar = ({ collapseMenu, collapse }) => {
           <ChatIcon />
           {!collapse && "Workspace name"}
         </MenuLogo>
-        <SidebarMenuItem>
+        <SidebarMenuItem collapse={collapse}>
           <DashIcon size={30} />
           <SidebarMenuItemLabel collapse={collapse}>
             Dashboard
           </SidebarMenuItemLabel>
         </SidebarMenuItem>
-        <SidebarMenuItem>
+        <SidebarMenuItem collapse={collapse}>
           <AlertIcon size={30} />
           <SidebarMenuItemLabel collapse={collapse}>
             Service Alerts
           </SidebarMenuItemLabel>
         </SidebarMenuItem>
-        <SidebarMenuItem>
+        <SidebarMenuItem collapse={collapse}>
           <ServiceIcon size={30} />
           <SidebarMenuItemLabel collapse={collapse}>
             Customer Tickets
           </SidebarMenuItemLabel>
         </SidebarMenuItem>
-        <SidebarMenuItem>
+        <SidebarMenuItem collapse={collapse}>
           <FolderIcon size={30} />
           <SidebarMenuItemLabel collapse={collapse}>
             Archive
           </SidebarMenuItemLabel>
         </SidebarMenuItem>
-        <SidebarMenuItem>
+        <SidebarMenuItem collapse={collapse}>
           <LibraryIcon size={30} />
           <SidebarMenuItemLabel collapse={collapse}>
             Library
           </SidebarMenuItemLabel>
         </SidebarMenuItem>
-        <SidebarMenuItem>
+        <SidebarMenuItem collapse={collapse}>
           <CarIcon size={30} />
           <SidebarMenuItemLabel collapse={collapse}>
             Deliveries
